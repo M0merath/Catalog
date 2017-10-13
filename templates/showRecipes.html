@@ -1,0 +1,50 @@
+<html>
+
+<head>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css')}}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+<h1>{{category.name}}</h1>
+
+<!--MESSAGE FLASHING EXAMPLE -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<ul>
+{% for message in messages %}
+  <li><strong>{{message}}</strong></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<br>
+<a href="{{ url_for('newRecipe', category_id = category_id)}}">New Recipe</a>
+<br>
+
+{% for r in recipes %}
+
+<div>
+<br>
+<p><em><strong><a href="{{ url_for('singleRecipe', category_id = r.category_id, recipe_id = r.id)}}">{{r.name}}</a></strong></em></p>
+<p>{{r.summary}}</p>
+
+<a href="{{ url_for('editRecipe', category_id = category_id, recipe_id = r.id)}}">Edit</a>
+</br>
+<a href="{{ url_for('deleteRecipe', category_id = r.category_id, recipe_id = r.id)}}">Delete</a>
+<br>
+
+</div>
+
+{% endfor %}
+
+<br>
+<br>
+
+<a href="{{ url_for('showCategories')}}">Back to Categories</a>
+
+</body>
+</html>

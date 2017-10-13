@@ -1,0 +1,58 @@
+<html>
+
+<head>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+<h1>{{category.name}}</h1>
+
+<!--MESSAGE FLASHING EXAMPLE -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<ul>
+{% for message in messages %}
+  <li><strong>{{message}}</strong></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<br>
+<br>
+
+<div>
+<br>
+<p><strong>{{recipe.name}}</strong></p>
+<p><em>{{recipe.summary}}</em></p>
+<br>
+<br>
+
+<div id="container">
+	<div id="ingredients">
+	<strong>
+	{% for i in ingSplit %}
+	{{i}}
+	<br><br>
+	{% endfor %}
+	</strong>
+</div>
+	<div id="directions">{{recipe.directions}}</div>
+</div>
+
+<a href="{{ url_for('editRecipe', category_id = category_id, recipe_id = recipe_id)}}">Edit</a>
+</br>
+<a href="{{ url_for('deleteRecipe', category_id = category_id, recipe_id = recipe_id)}}">Delete</a>
+<br>
+</div>
+
+<br>
+<br>
+
+<a href="{{ url_for('showCategories')}}">Back to Categories</a>
+
+</body>
+</html>
