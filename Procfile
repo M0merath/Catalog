@@ -1,1 +1,1 @@
-web: python catalog.py
+web: gunicorn catalog.py
