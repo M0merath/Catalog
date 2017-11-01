@@ -277,14 +277,14 @@ def categoriesJSON():
 @app.route('/category/<int:category_id>')
 @app.route('/category/<int:category_id>/recipes')
 def showRecipes(category_id):
-	category = session.query(Category).filter_by(id=category_id).one()
-	recipes = session.query(Recipe).filter_by(category_id=category_id)
-	creator = getUserInfo(category.user_id)
-	#return render_template('showRecipes.html', category=category, recipes=recipes, category_id=category_id)
-	if 'username' not in login_session or creator.id != login_session['user_id']:
-            return render_template('publicRecipes.html', category=category, creator=creator, recipes=recipes, category_id=category_id)
-        else:
-            return render_template('showRecipes.html', category=category, creator=creator, recipes=recipes, category_id=category_id)
+    category = session.query(Category).filter_by(id=category_id).one()
+    recipes = session.query(Recipe).filter_by(category_id=category_id)
+    creator = getUserInfo(category.user_id)
+    #return render_template('showRecipes.html', category=category, recipes=recipes, category_id=category_id)
+    if 'username' not in login_session or creator.id != login_session['user_id']:
+        return render_template('publicRecipes.html', category=category, creator=creator, recipes=recipes, category_id=category_id)
+    else:
+        return render_template('showRecipes.html', category=category, creator=creator, recipes=recipes, category_id=category_id)
 
 @app.route('/category/<int:category_id>/recipe/<int:recipe_id>')
 def singleRecipe(category_id, recipe_id):
