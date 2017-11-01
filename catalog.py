@@ -261,12 +261,12 @@ def gdisconnect():
 @app.route('/')
 @app.route('/category/')
 def showCategories():
-	categories = session.query(Category)
-	#return render_template('categories.html', categories=categories)
-        if 'username' not in login_session:
-            return render_template('publicCategories.html', categories=categories)
-        else:
-            return render_template('categories.html', categories=categories)
+    categories = session.query(Category)
+    #return render_template('categories.html', categories=categories)
+    if 'username' not in login_session:
+        return render_template('publicCategories.html', categories=categories)
+    else:
+        return render_template('categories.html', categories=categories)
         
 
 @app.route('/category/JSON')
