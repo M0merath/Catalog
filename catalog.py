@@ -293,7 +293,7 @@ def singleRecipe(category_id, recipe_id):
         ingString = str(recipe.ingredients)
         ingSplit = ingString.split(", ")
         for i in ingSplit:
-                print i
+                print (i)
         ingList = "\n".join(ingSplit)
         if 'username' not in login_session:
             return render_template('publicRecipe.html', category=category, recipe=recipe, category_id=category_id, recipe_id=recipe_id, ingSplit=ingSplit)
