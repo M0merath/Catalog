@@ -328,9 +328,9 @@ def editCategory(category_id):
         if request.method == 'POST':
             category = session.query(Category).filter_by(id=category_id).one()
             category.name = request.form['name']
-	    session.commit()
-	    flash("Category Successfully Edited")
-	    return redirect(url_for('showCategories'))
+            session.commit()
+            flash("Category Successfully Edited")
+            return redirect(url_for('showCategories'))
         else:
             return render_template('editCategory.html', category_id = category_id, categoryToEdit = categoryToEdit)
     else:
@@ -339,83 +339,83 @@ def editCategory(category_id):
 
 @app.route('/category/<int:category_id>/delete', methods=['GET','POST'])
 def deleteCategory(category_id):
-	#flash("category_id: %s" % category_id)
-	categoryToDelete = session.query(Category).filter_by(id=category_id).one()
-	user = login_session['user_id']
-	if categoryToDelete.user_id == user:
-            if request.method == 'POST':
-		session.delete(categoryToDelete)
-		session.commit()
-		flash("Category Successfully Deleted")
-		return redirect(url_for('showCategories'))
-            else:
-		return render_template('deleteCategory.html', category_id = category_id, categoryToDelete = categoryToDelete)
-	else:
-            flash("Only the author of this category can delete it.")
-            return redirect(url_for('showCategories'))
+    #flash("category_id: %s" % category_id)
+    categoryToDelete = session.query(Category).filter_by(id=category_id).one()
+    user = login_session['user_id']
+    if categoryToDelete.user_id == user:
+        if request.method == 'POST':
+	    session.delete(categoryToDelete)
+	    session.commit()
+	    flash("Category Successfully Deleted")
+	    return redirect(url_for('showCategories'))
+        else:
+	    return render_template('deleteCategory.html', category_id = category_id, categoryToDelete = categoryToDelete)
+    else:
+        flash("Only the author of this category can delete it.")
+        return redirect(url_for('showCategories'))
 
 @app.route('/category/<int:category_id>/recipe/new', methods=['GET','POST'])
 def newRecipe(category_id):
-	category = session.query(Category).filter_by(id=category_id).one()
-	if request.method == 'POST':
-		newItem = Recipe(name=request.form['name'], summary=request.form['summary'], ingredients=request.form['ingredients'], directions=request.form['directions'], category_id = category_id, user_id=login_session['user_id'])
-		session.add(newItem)
-		session.commit()
-		flash("Recipe Created!")
-		return redirect(url_for('showRecipes', category_id=category_id))
-	else:
-		return render_template('newRecipe.html', category_id = category_id)
+    category = session.query(Category).filter_by(id=category_id).one()
+    if request.method == 'POST':
+	newItem = Recipe(name=request.form['name'], summary=request.form['summary'], ingredients=request.form['ingredients'], directions=request.form['directions'], category_id = category_id, user_id=login_session['user_id'])
+	session.add(newItem)
+	session.commit()
+	flash("Recipe Created!")
+	return redirect(url_for('showRecipes', category_id=category_id))
+    else:
+	return render_template('newRecipe.html', category_id = category_id)
 
 @app.route('/category/<int:category_id>/recipe/<int:recipe_id>/edit', methods=['GET','POST'])
 def editRecipe(category_id, recipe_id):
-	itemToEdit = session.query(Recipe).filter_by(id=recipe_id).one()
-	category = session.query(Category).filter_by(id=category_id).one()
-	user = login_session['user_id']
-	if itemToEdit.user_id == user:
-            if request.method == 'POST':
+    itemToEdit = session.query(Recipe).filter_by(id=recipe_id).one()
+    category = session.query(Category).filter_by(id=category_id).one()
+    user = login_session['user_id']
+    if itemToEdit.user_id == user:
+        if request.method == 'POST':
+	    itemToEdit.name = request.form['name']
+	    itemToEdit.summary = request.form['summary']
+	    itemToEdit.ingredients = request.form['ingredients']
+	    itemToEdit.directions = request.form['directions']
+	    session.add(itemToEdit)
+	    session.commit()
+	    if request.form['name']:
 		itemToEdit.name = request.form['name']
-		itemToEdit.summary = request.form['summary']
-		itemToEdit.ingredients = request.form['ingredients']
-		itemToEdit.directions = request.form['directions']
-		session.add(itemToEdit)
-		session.commit()
-		if request.form['name']:
-			itemToEdit.name = request.form['name']
-		if request.form['summary']:
-			itemToEdit.description = request.form['summary']
-		if request.form['ingredients']:
-			itemToEdit.price = request.form['ingredients']
-		if request.form['directions']:
-			itemToEdit.course = request.form['directions']
+	    if request.form['summary']:
+		itemToEdit.description = request.form['summary']
+	    if request.form['ingredients']:
+		itemToEdit.price = request.form['ingredients']
+	    if request.form['directions']:
+		itemToEdit.course = request.form['directions']
 		flash("Recipe Successfully Edited")
 		return redirect(url_for('showRecipes', category_id=category_id))
             return render_template('editRecipe.html', category_id = category_id, recipe_id = recipe_id, itemToEdit = itemToEdit)
-        else:
-            flash("You must be the author of this recipe to edit it.")
-            return redirect(url_for('singleRecipe', category_id=category_id, recipe_id=recipe_id))
+    else:
+        flash("You must be the author of this recipe to edit it.")
+        return redirect(url_for('singleRecipe', category_id=category_id, recipe_id=recipe_id))
 
 @app.route('/category/<int:category_id>/recipe/<int:recipe_id>/JSON')
 def recipeJSON(category_id, recipe_id):
-	category = session.query(Category).filter_by(id=category_id).one()
-	recipe = session.query(Recipe).filter_by(id=recipe_id)
-	return jsonify(recipe=[r.serialize for r in recipe])
+    category = session.query(Category).filter_by(id=category_id).one()
+    recipe = session.query(Recipe).filter_by(id=recipe_id)
+    return jsonify(recipe=[r.serialize for r in recipe])
 
 @app.route('/category/<int:category_id>/recipe/<int:recipe_id>/delete', methods=['GET','POST'])
 def deleteRecipe(category_id, recipe_id):
-	category = session.query(Category).filter_by(id=category_id).one()
-	itemToDelete = session.query(Recipe).filter_by(id=recipe_id).one()
-	user = login_session['user_id']
-	if itemToDelete.user_id == user:
-            if request.method == 'POST':
-		session.delete(itemToDelete)
-		session.commit()
-		flash("Menu Item Successfully Deleted")
-		return redirect(url_for('showRecipes', category_id=category_id))
-            else:
-		return render_template('deleteRecipe.html', recipe=itemToDelete, category_id=category_id)
-	else:
-            flash("Only the author of this recipe can delete it.")
-            return redirect(url_for('singleRecipe', category_id=category_id, recipe_id=recipe_id))
+    category = session.query(Category).filter_by(id=category_id).one()
+    itemToDelete = session.query(Recipe).filter_by(id=recipe_id).one()
+    user = login_session['user_id']
+    if itemToDelete.user_id == user:
+        if request.method == 'POST':
+	    session.delete(itemToDelete)
+	    session.commit()
+	    flash("Menu Item Successfully Deleted")
+	    return redirect(url_for('showRecipes', category_id=category_id))
+        else:
+	    return render_template('deleteRecipe.html', recipe=itemToDelete, category_id=category_id)
+    else:
+        flash("Only the author of this recipe can delete it.")
+        return redirect(url_for('singleRecipe', category_id=category_id, recipe_id=recipe_id))
             
 
 # Disconnect based on provider
