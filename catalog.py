@@ -358,13 +358,13 @@ def deleteCategory(category_id):
 def newRecipe(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     if request.method == 'POST':
-	newItem = Recipe(name=request.form['name'], summary=request.form['summary'], ingredients=request.form['ingredients'], directions=request.form['directions'], category_id = category_id, user_id=login_session['user_id'])
-	session.add(newItem)
-	session.commit()
-	flash("Recipe Created!")
-	return redirect(url_for('showRecipes', category_id=category_id))
+        newItem = Recipe(name=request.form['name'], summary=request.form['summary'], ingredients=request.form['ingredients'], directions=request.form['directions'], category_id = category_id, user_id=login_session['user_id'])
+        session.add(newItem)
+        session.commit()
+        flash("Recipe Created!")
+        return redirect(url_for('showRecipes', category_id=category_id))
     else:
-	return render_template('newRecipe.html', category_id = category_id)
+        return render_template('newRecipe.html', category_id = category_id)
 
 @app.route('/category/<int:category_id>/recipe/<int:recipe_id>/edit', methods=['GET','POST'])
 def editRecipe(category_id, recipe_id):
@@ -373,22 +373,22 @@ def editRecipe(category_id, recipe_id):
     user = login_session['user_id']
     if itemToEdit.user_id == user:
         if request.method == 'POST':
-	    itemToEdit.name = request.form['name']
-	    itemToEdit.summary = request.form['summary']
-	    itemToEdit.ingredients = request.form['ingredients']
-	    itemToEdit.directions = request.form['directions']
-	    session.add(itemToEdit)
-	    session.commit()
-	    if request.form['name']:
-		itemToEdit.name = request.form['name']
-	    if request.form['summary']:
-		itemToEdit.description = request.form['summary']
-	    if request.form['ingredients']:
-		itemToEdit.price = request.form['ingredients']
-	    if request.form['directions']:
-		itemToEdit.course = request.form['directions']
-		flash("Recipe Successfully Edited")
-		return redirect(url_for('showRecipes', category_id=category_id))
+            itemToEdit.name = request.form['name']
+            itemToEdit.summary = request.form['summary']
+            itemToEdit.ingredients = request.form['ingredients']
+            itemToEdit.directions = request.form['directions']
+            session.add(itemToEdit)
+            session.commit()
+            if request.form['name']:
+                itemToEdit.name = request.form['name']
+            if request.form['summary']:
+                itemToEdit.description = request.form['summary']
+            if request.form['ingredients']:
+                itemToEdit.price = request.form['ingredients']
+            if request.form['directions']:
+                itemToEdit.course = request.form['directions']
+                flash("Recipe Successfully Edited")
+                return redirect(url_for('showRecipes', category_id=category_id))
             return render_template('editRecipe.html', category_id = category_id, recipe_id = recipe_id, itemToEdit = itemToEdit)
     else:
         flash("You must be the author of this recipe to edit it.")
