@@ -322,20 +322,20 @@ def newCategory():
 
 @app.route('/category/<int:category_id>/edit', methods=['GET', 'POST'])
 def editCategory(category_id):
-	categoryToEdit = session.query(Category).filter_by(id = category_id).one()
-	user = login_session['user_id']
-	if categoryToEdit.user_id == user:
-            if request.method == 'POST':
-		category = session.query(Category).filter_by(id=category_id).one()
-		category.name = request.form['name']
-		session.commit()
-		flash("Category Successfully Edited")
-		return redirect(url_for('showCategories'))
-            else:
-                return render_template('editCategory.html', category_id = category_id, categoryToEdit = categoryToEdit)
+    categoryToEdit = session.query(Category).filter_by(id = category_id).one()
+    user = login_session['user_id']
+    if categoryToEdit.user_id == user:
+        if request.method == 'POST':
+            category = session.query(Category).filter_by(id=category_id).one()
+	    category.name = request.form['name']
+	    session.commit()
+	    flash("Category Successfully Edited")
+	    return redirect(url_for('showCategories'))
         else:
-            flash("Only the author of this category can edit it.")
-            return redirect(url_for('showCategories'))
+            return render_template('editCategory.html', category_id = category_id, categoryToEdit = categoryToEdit)
+    else:
+        flash("Only the author of this category can edit it.")
+        return redirect(url_for('showCategories'))
 
 @app.route('/category/<int:category_id>/delete', methods=['GET','POST'])
 def deleteCategory(category_id):
