@@ -327,7 +327,7 @@ def editCategory(category_id):
     if categoryToEdit.user_id == user:
         if request.method == 'POST':
             category = session.query(Category).filter_by(id=category_id).one()
-	    category.name = request.form['name']
+            category.name = request.form['name']
 	    session.commit()
 	    flash("Category Successfully Edited")
 	    return redirect(url_for('showCategories'))
