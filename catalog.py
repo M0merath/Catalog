@@ -7,6 +7,7 @@ import random
 import string
 import json
 import httplib2
+import os
 
 app = Flask(__name__)
 app.secret_key = 'nothing special'
@@ -442,4 +443,5 @@ def disconnect():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host = '0.0.0.0', port = 5000)
+    myPort = int(os.environ.get('PORT', 8000))
+    app.run(host = '0.0.0.0', myPort)
