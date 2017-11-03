@@ -407,12 +407,12 @@ def deleteRecipe(category_id, recipe_id):
     user = login_session['user_id']
     if itemToDelete.user_id == user:
         if request.method == 'POST':
-	    session.delete(itemToDelete)
-	    session.commit()
-	    flash("Menu Item Successfully Deleted")
-	    return redirect(url_for('showRecipes', category_id=category_id))
+            session.delete(itemToDelete)
+            session.commit()
+            flash("Menu Item Successfully Deleted")
+            return redirect(url_for('showRecipes', category_id=category_id))
         else:
-	    return render_template('deleteRecipe.html', recipe=itemToDelete, category_id=category_id)
+            return render_template('deleteRecipe.html', recipe=itemToDelete, category_id=category_id)
     else:
         flash("Only the author of this recipe can delete it.")
         return redirect(url_for('singleRecipe', category_id=category_id, recipe_id=recipe_id))
@@ -429,17 +429,17 @@ def disconnect():
         if login_session['provider'] == 'facebook':
             fbdisconnect()
             del login_session['facebook_id']
-        del login_session['username']
-        del login_session['email']
-        del login_session['picture']
-        del login_session['user_id']
-        del login_session['provider']
-        flash("You have successfully been logged out.")
-        return redirect(url_for('showCategories'))
+            del login_session['username']
+            del login_session['email']
+            del login_session['picture']
+            del login_session['user_id']
+            del login_session['provider']
+            flash("You have successfully been logged out.")
+            return redirect(url_for('showCategories'))
     else:
         flash("You were not logged in")
         return redirect(url_for('showCategories'))
 
 if __name__ == '__main__':
-	app.debug = True
-	app.run(host = '0.0.0.0', port = 5000)
+    app.debug = True
+    app.run(host = '0.0.0.0', port = 5000)
