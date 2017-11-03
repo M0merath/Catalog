@@ -344,10 +344,10 @@ def deleteCategory(category_id):
     user = login_session['user_id']
     if categoryToDelete.user_id == user:
         if request.method == 'POST':
-	    session.delete(categoryToDelete)
-	    session.commit()
-	    flash("Category Successfully Deleted")
-	    return redirect(url_for('showCategories'))
+            session.delete(categoryToDelete)
+            session.commit()
+            flash("Category Successfully Deleted")
+            return redirect(url_for('showCategories'))
         else:
 	    return render_template('deleteCategory.html', category_id = category_id, categoryToDelete = categoryToDelete)
     else:
