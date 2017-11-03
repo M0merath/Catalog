@@ -349,7 +349,7 @@ def deleteCategory(category_id):
             flash("Category Successfully Deleted")
             return redirect(url_for('showCategories'))
         else:
-	    return render_template('deleteCategory.html', category_id = category_id, categoryToDelete = categoryToDelete)
+            return render_template('deleteCategory.html', category_id = category_id, categoryToDelete = categoryToDelete)
     else:
         flash("Only the author of this category can delete it.")
         return redirect(url_for('showCategories'))
