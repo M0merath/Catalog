@@ -34,7 +34,7 @@ def fbconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     access_token = request.data
-    print ("access token received %s ") % access_token
+    #print ("access token received %s ") % access_token
 
 
     app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
